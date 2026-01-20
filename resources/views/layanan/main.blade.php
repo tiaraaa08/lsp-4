@@ -1,66 +1,95 @@
 @extends('master')
 @section('title', 'Layanan')
 @section('content')
-    <h6 class="pb-1 mb-4 text-muted">Outline</h6>
-    <div class="row g-6">
-        <div class="col-md-6 col-xl-4">
-            <div class="card shadow-none bg-transparent border border-primary">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Primary card title</h5>
-                    <p class="card-text text-primary">
-                        Some quick example text to build on the card title and make up.
-                    </p>
-                </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between my-3">
+                <h5 class="">Layanan</h5>
+                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#tambahLayanan">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
             </div>
-        </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card shadow-none bg-transparent border border-secondary">
-                <div class="card-body">
-                    <h5 class="card-title text-secondary">Secondary card title</h5>
-                    <p class="card-text text-secondary">
-                        Some quick example text to build on the card title and make up.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card shadow-none bg-transparent border border-success">
-                <div class="card-body">
-                    <h5 class="card-title text-success">Success card title</h5>
-                    <p class="card-text text-success">
-                        Some quick example text to build on the card title and make up.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card shadow-none bg-transparent border border-danger">
-                <div class="card-body">
-                    <h5 class="card-title text-danger">Danger card title</h5>
-                    <p class="card-text text-danger">
-                        Some quick example text to build on the card title and make up.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card shadow-none bg-transparent border border-warning">
-                <div class="card-body">
-                    <h5 class="card-title text-warning">Warning card title</h5>
-                    <p class="card-text text-warning">
-                        Some quick example text to build on the card title and make up.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4">
-            <div class="card shadow-none bg-transparent border border-info">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Info card title</h5>
-                    <p class="card-text text-info">Some quick example text to build on the card title and make up.</p>
-                </div>
+            <div class="table-responsive text-nowrap">
+                <table class="table table-bordered" id="tableLayanan">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Layanan</th>
+                            <th>Harga Per KG</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($layanan as $l)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $l->nama_layanan }}</td>
+                                <td>{{ number_format($l->harga_per_kg, 0, ',', '.') }}</td>
+                                <td>
+                                    <div class="d-flex jusstify-content-center gap-2">
+                                        <button type="button" data-bs-toggle="modal"
+                                            data-bs-target="#editLayanan{{ $l->id }}"
+                                            class="btn btn-outline-warning"><i
+                                                class="fa-regular fa-pen-to-square"></i></button>
+
+                                        <form action="{{ route('layanan.destroy', $l->id) }}" method="POST"
+                                            class="KonfirmasiHapus">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-outline-danger"><i
+                                                    class="fa-solid fa-trash-can"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @include('layanan.edit')
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
+    @include('layanan.tambah')
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#tableLayanan').DataTable({
+                language: {
+                    emptyTable: '<span class="text-danger"> Data transaksi tidak tersedia</span>'
+                }
+            });
+        });
+
+        document.addEventListener('shown.bs.modal', function(e) {
+            const harga = e.target.querySelectorAll('.hargaKG');
+
+            harga.forEach(input => {
+                let mentah = input.value.replace(/\D/g, '');
+
+                if (mentah !== '') {
+                    input.value = new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                    }).format(Number(mentah));
+                }
+
+                input.addEventListener('input', function() {
+                    let val = this.value.replace(/\D/g, '');
+
+                    this.value = val ?
+                        new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                        }).format(Number(val)) : '';
+                });
+            });
+        });
+    </script>
+@endpush

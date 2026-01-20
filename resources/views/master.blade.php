@@ -11,7 +11,9 @@
     <title>Dashboard - Analytics | Materio - Bootstrap Material Design Admin Template</title>
 
     <meta name="description" content="" />
-
+    <link rel="stylesheet" href="{{ asset('template/datatables/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/sweetalert/package/dist/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/fontawesome/css/all.min.css') }}">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
 
@@ -34,16 +36,16 @@
     <link rel="stylesheet" href="{{ asset('template/assets/css/demo.css') }}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
 
     <!-- Page CSS -->
 
     <!-- Helpers -->
-    <script src="../assets/vendor/js/helpers.js"></script>
+    <script src="{{ asset('template/assets/vendor/js/helpers.js') }}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="../assets/js/config.js"></script>
+    <script src="{{ asset('template/assets/js/config.js') }}"></script>
 </head>
 
 <body>
@@ -100,44 +102,27 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Dashboards -->
-                    <li class="menu-item active open">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('dashboard') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-home-smile-line"></i>
                             <div data-i18n="Dashboards">Dashboards</div>
                         </a>
                     </li>
 
                     <!-- Front Pages -->
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <li class="menu-item {{ request()->routeIs('layanan.*') ? 'active' : '' }}">
+                        <a href="{{ route('layanan.main') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-file-copy-line"></i>
                             <div data-i18n="Front Pages">Layanan</div>
                         </a>
                     </li>
 
                     <!-- Pages -->
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <li class="menu-item {{ request()->routeIs('transaksi.*') ? 'active' : '' }}">
+                        <a href="{{ route('transaksi.main') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-layout-left-line"></i>
                             <div data-i18n="Account Settings">Transaksi</div>
                         </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="pages-account-settings-account.html" class="menu-link">
-                                    <div data-i18n="Account">Account</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="pages-account-settings-notifications.html" class="menu-link">
-                                    <div data-i18n="Notifications">Notifications</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="pages-account-settings-connections.html" class="menu-link">
-                                    <div data-i18n="Connections">Connections</div>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
             </aside>
@@ -248,17 +233,19 @@
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb breadcrumb-style1">
-                            <li class="breadcrumb-item" class="fs-4">
-                                <a href="javascript:void(0);">Home</a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="javascript:void(0);">@yield('title', 'Dashboard')</a>
-                            </li>
-                        </ol>
-                    </nav>
-                    @yield('content')
+                    <div class="container">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb breadcrumb-style1">
+                                <li class="breadcrumb-item" class="fs-4">
+                                    <a href="javascript:void(0);">Home</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="javascript:void(0);">@yield('title', 'Dashboard')</a>
+                                </li>
+                            </ol>
+                        </nav>
+                        @yield('content')
+                    </div>
                     {{-- <div class="content-backdrop fade"></div> --}}
                 </div>
                 <!-- Content wrapper -->
@@ -273,24 +260,84 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../assets/vendor/js/bootstrap.js"></script>
-    <script src="../assets/vendor/libs/node-waves/node-waves.js"></script>
-    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="../assets/vendor/js/menu.js"></script>
+    <script src="{{ asset('template/assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('template/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('template/sweetalert/package/dist/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('template/assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('template/assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('template/assets/vendor/libs/node-waves/node-waves.js') }}"></script>
+    <script src="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('template/assets/vendor/js/menu.js') }}"></script>
 
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <script src="{{ asset('template/assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
 
     <!-- Main JS -->
-    <script src="../assets/js/main.js"></script>
+    <script src="{{ asset('template/assets/js/main.j') }}s"></script>
 
     <!-- Page JS -->
-    <script src="../assets/js/dashboards-analytics.js"></script>
+    <script src="{{ asset('template/assets/js/dashboards-analytics.js') }}"></script>
+    @stack('scripts')
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+            });
+        </script>
+    @elseif ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                text: '{{ $errors->first() }}',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+    <script>
+        const hapus = document.querySelectorAll(".KonfirmasiHapus");
+        hapus.forEach((form) => {
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "Yakin menghapus data ini?",
+                    text: "Data tidak tkan bisa dipulihkan",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya! Hapus Data"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
 
+        const bayar = document.querySelectorAll(".KonfirmasiBayar");
+        bayar.forEach((form) => {
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "Yakin mengubah status pembayaran?",
+                    text: "Pastikan untuk mengecek mutasi!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya! Sudah"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
